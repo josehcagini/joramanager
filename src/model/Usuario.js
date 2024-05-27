@@ -47,6 +47,6 @@ export default class Usuario extends Model {
 
   static associate(models) {
     this.belongsTo(models.Grupo, { foreignKey: 'grupo_id' });
-    this.belongsTo(models.Atividade, { foreignKey: 'usuario_id' });
+    this.hasMany(models.Atividade, { foreignKey: 'usuario_id' });
   }
 }

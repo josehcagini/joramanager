@@ -23,22 +23,26 @@ class App {
     this.app = express();
     this.midlleswares();
     this.routes();
+    this.routeTeste();
   }
 
   midlleswares() {
-    this.app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
-
+    this.app.use(express.json());
     this.app.use(cors({}));
     this.app.use(helmet({
       contentSecurityPolicy: false,
       crossOriginEmbedderPolicy: false,
     }));
     this.app.use(express.urlencoded({ extended: true }));
-    this.app.use(express.json());
+    this.app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
   }
 
   routes() {
     this.app.use('/usuario', UsuarioRoute);
+  }
+
+  routeTeste() {
+    this.app.use('/teste', (req, res) => res.status(200).json({ response: 'OK!' }));
   }
 }
 

@@ -25,6 +25,6 @@ module.exports = {
     'import/extensions': 'off',
     'no-console': 'off',
     'no-param-reassign': 'off',
-
+    'class-methods-use-this': 'off',
   },
 };
