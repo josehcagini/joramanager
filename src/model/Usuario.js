@@ -41,10 +41,6 @@ export default class Usuario extends Model {
     return this;
   }
 
-  senhaIsValid(password) {
-    return bcryptjs.compare(password, this.senha_hash);
-  }
-
   static associate(models) {
     this.belongsTo(models.Grupo, { foreignKey: 'grupo_id' });
     this.hasMany(models.Atividade, { foreignKey: 'usuario_id' });

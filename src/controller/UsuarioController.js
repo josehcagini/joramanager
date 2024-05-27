@@ -1,7 +1,8 @@
 import { StatusCodes } from 'http-status-codes';
-import GenericError from '../Error/GenericError.js';
+import GenericError from '../error/GenericError.js';
 
 import UsuarioRepo from '../repository/UsuarioRepo.js';
+import UsuarioEntity from '../entity/UsuarioEntity.js';
 
 class UsuarioController {
   static async validarNovoUsuario(novoUsuario) {
@@ -34,7 +35,9 @@ class UsuarioController {
 
       await UsuarioController.validarNovoUsuario(usuario);
 
-      const usuarioSave = UsuarioRepo.parse(usuario);
+      const usuarioSave = UsuarioEntity.parse(usuario);
+
+      console.log(usuarioSave);
 
       const novoUsuario = await UsuarioRepo.create(usuarioSave);
 
