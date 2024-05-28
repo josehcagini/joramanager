@@ -7,25 +7,25 @@ import UsuarioEntity from '../entity/UsuarioEntity.js';
 class UsuarioController {
   static async validarNovoUsuario(novoUsuario) {
     if (!novoUsuario) {
-      throw new GenericError('corpo da requisicao nao possui usuario', {}, { status: 400 });
+      throw new GenericError('corpo da requisicao nao possui usuario', {}, { status: StatusCodes.BAD_REQUEST });
     }
     if (!novoUsuario.nome) {
-      throw new GenericError('usuario nao possui nome', {}, { status: 400 });
+      throw new GenericError('usuario nao possui nome', {}, { status: StatusCodes.BAD_REQUEST });
     }
     if (!novoUsuario.senha) {
-      throw new GenericError('usuario nao possui senha', {}, { status: 400 });
+      throw new GenericError('usuario nao possui senha', {}, { status: StatusCodes.BAD_REQUEST });
     }
 
     const usuarioExiste = await UsuarioRepo.findOne({ where: { nome: novoUsuario.nome } });
 
     if (usuarioExiste) {
-      throw new GenericError('nome ja em uso', {}, { status: 409 });
+      throw new GenericError('nome ja em uso', {}, { status: StatusCodes.CONFLICT });
     }
 
     if (novoUsuario.grupo_id) {
       // validar se tem foi passado grupo, validar se o grupo existe
 
-      throw new GenericError('grupo nao existe ', {}, { status: 404 });
+      throw new GenericError('grupo nao existe ', {}, { status: StatusCodes.NOT_FOUND });
     }
   }
 
@@ -36,8 +36,6 @@ class UsuarioController {
       await UsuarioController.validarNovoUsuario(usuario);
 
       const usuarioSave = UsuarioEntity.parse(usuario);
-
-      console.log(usuarioSave);
 
       const novoUsuario = await UsuarioRepo.create(usuarioSave);
 
@@ -66,6 +64,36 @@ class UsuarioController {
           home: '/',
         },
       });
+    }
+  }
+
+  async show(req, res) {
+    try {
+      const { usuarioId } = req.params;
+
+      console.log('usuario id:', req.params);
+
+      if (!usuarioId) {
+        throw new GenericError('request sem usuarioId', { status: StatusCodes.BAD_REQUEST });
+      }
+
+      const usuarios = await UsuarioRepo.findByPk(usuarioId);
+
+      return res.status(StatusCodes.OK).json({ usuarios });
+    } catch (error) {
+      console.log(error);
+
+      const status = error.status ? error.status : StatusCodes.INTERNAL_SERVER_ERROR;
+      const retjson = {
+        error: {
+          message: error.message,
+          ...error,
+        },
+        paths: {
+          home: '/',
+        },
+      };
+      return res.status(status).json(retjson);
     }
   }
 }

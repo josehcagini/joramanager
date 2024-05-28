@@ -1,3 +1,4 @@
+import { StatusCodes } from 'http-status-codes';
 import Usuario from '../model/Usuario.js';
 import GenericError from '../error/GenericError.js';
 import UsuarioEntity from '../entity/UsuarioEntity.js';
@@ -11,6 +12,22 @@ class UsuarioRepo {
     }
 
     const usuario = UsuarioEntity.fromModel(await res.dataValues);
+
+    return usuario;
+  }
+
+  async findByPk(usuarioId) {
+    let usuario;
+
+    try {
+      const res = await Usuario.findByPk(usuarioId);
+      usuario = UsuarioEntity.fromModel(await res.dataValues);
+    } catch (error) {
+      throw new GenericError(
+        error.message,
+        { status: error.status ? error.status : StatusCodes.INTERNAL_SERVER_ERROR },
+      );
+    }
 
     return usuario;
   }

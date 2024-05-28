@@ -21,7 +21,6 @@ class UsuarioEntity {
     const usuarioParse = {
       id: usuarioModel.id,
       nome: usuarioModel.nome,
-      senha_hash: usuarioModel.senha_hash,
       grupo_id: usuarioModel.grupo_id,
     };
 
