@@ -26,6 +26,10 @@ module.exports = {
             schema: 'dba',
           },
         },
+        bloqueado: {
+          type: Sequelize.BOOLEAN,
+          allowNull: false,
+        },
         created_at: {
           type: Sequelize.DATE,
           allowNull: false,

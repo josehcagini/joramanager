@@ -2,12 +2,11 @@ import bcryptjs from 'bcryptjs';
 
 class UsuarioEntity {
   constructor(usuario) {
+    if (usuario.id) this.id = usuario.id;
     this.nome = usuario.nome;
 
     if (usuario.senha) this.senha = usuario.senha;
     if (usuario.senha_hash) this.senha = usuario.senha_hash;
-
-    if (usuario.id) this.id = usuario.id;
     if (usuario.grupo_id) this.grupo_id = usuario.grupo_id;
   }
 

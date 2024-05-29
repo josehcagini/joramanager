@@ -1,6 +1,6 @@
 import Sequelize, { Model } from 'sequelize';
 
-export default class Grupo extends Model {
+export default class Permissao extends Model {
   static init(sequelize) {
     super.init({
       descricao: {
@@ -12,6 +12,18 @@ export default class Grupo extends Model {
             msg: 'descricao precisa ter entre 3 e 255 caracteres',
           },
         },
+      },
+      bloqueado: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: true,
+      },
+      tipo_operacao: {
+        type: Sequelize.STRING,
+        defaultValue: '',
+      },
+      modulo: {
+        type: Sequelize.STRING,
+        defaultValue: '',
       },
     }, {
       sequelize,

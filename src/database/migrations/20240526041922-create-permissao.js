@@ -14,6 +14,14 @@ module.exports = {
           type: Sequelize.STRING,
           allowNull: false,
         },
+        tipo_operacao: {
+          type: Sequelize.STRING,
+          allowNull: false,
+        },
+        modulo: {
+          type: Sequelize.STRING,
+          allowNull: false,
+        },
         created_at: {
           type: Sequelize.DATE,
           allowNull: false,
