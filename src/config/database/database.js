@@ -3,7 +3,7 @@ const dotenv = require('dotenv');
 const { join } = require('path');
 
 const currentDirname = __dirname;
-const pathEnv = join(currentDirname, '..', '..', '.env');
+const pathEnv = join(currentDirname, '..', '..', '..', '.env');
 
 dotenv.config({ path: pathEnv });
 

@@ -26,6 +26,17 @@ class UsuarioEntity {
     return new UsuarioEntity(usuarioParse);
   }
 
+  static fromModelLogin(usuarioModel) {
+    const usuarioParse = {
+      id: usuarioModel.id,
+      nome: usuarioModel.nome,
+      grupo_id: usuarioModel.grupo_id,
+      senha_hash: usuarioModel.senha_hash,
+    };
+
+    return new UsuarioEntity(usuarioParse);
+  }
+
   async senhaIsValid(password) {
     return bcryptjs.compare(password, this.senha_hash);
   }

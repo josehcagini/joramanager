@@ -3,6 +3,7 @@ import GenericError from '../error/GenericError.js';
 
 import UsuarioRepo from '../repository/UsuarioRepo.js';
 import UsuarioEntity from '../entity/UsuarioEntity.js';
+import GrupoController from './GrupoController.js';
 
 class UsuarioController {
   static async validarNovoUsuario(novoUsuario) {
@@ -27,6 +28,10 @@ class UsuarioController {
 
       throw new GenericError('grupo nao existe ', { status: StatusCodes.NOT_FOUND });
     }
+  }
+
+  static async hasAccess(tipoOperacao, usuario) {
+    return GrupoController.hasAccess(tipoOperacao, usuario.grupo_id);
   }
 
   async store(req, res) {
