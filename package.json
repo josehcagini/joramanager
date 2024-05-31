@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "lint": "eslint ./src",
-    "dev": "nodemon ./src/server.js",
+    "dev": "nodemon --exec babel-node ./src/server.js",
+    "sequelize": "babel-node node_modules/.bin/sequelize $*",
     "test": "echo \"Error: no test specified\" && exit 1",
     "migrate:up": "npx sequelize-cli db:migrate",
     "migrate:undo": "npx sequelize-cli db:migrate:undo",
@@ -31,6 +32,10 @@
     "swagger-ui-express": "^5.0.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.24.6",
+    "@babel/core": "^7.24.6",
+    "@babel/node": "^7.24.6",
+    "@babel/preset-env": "^7.24.6",
     "eslint": "^8.57.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.29.1",

@@ -1,8 +1,8 @@
-import dotenv from 'dotenv';
-import { join, dirname } from 'path';
-import { fileURLToPath } from 'url';
+/* eslint-disable import/no-extraneous-dependencies */
+const dotenv = require('dotenv');
+const { join } = require('path');
 
-const currentDirname = dirname(fileURLToPath(import.meta.url));
+const currentDirname = __dirname;
 const pathEnv = join(currentDirname, '..', '..', '.env');
 
 dotenv.config({ path: pathEnv });
@@ -10,7 +10,7 @@ dotenv.config({ path: pathEnv });
 // console.log(pathEnv)
 // console.log(process.env.DATABASE_HOST)
 
-export default {
+module.exports = {
   dialect: 'postgres',
   host: process.env.DATABASE_HOST,
   port: process.env.DATABASE_PORT,
