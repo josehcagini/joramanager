@@ -6,7 +6,7 @@ import UsuarioEntity from '../entity/UsuarioEntity.js';
 import GrupoController from './GrupoController.js';
 
 class UsuarioController {
-  async validarNovoUsuario(novoUsuario) {
+  static async validarNovoUsuario(novoUsuario) {
     if (!novoUsuario) {
       throw new GenericError('corpo da requisicao nao possui usuario', { status: StatusCodes.BAD_REQUEST });
     }

@@ -26,11 +26,12 @@ class LoginController {
         throw new GenericError('credenciais invalidas', { status: StatusCodes.BAD_REQUEST });
       }
 
-      const usuario = UsuarioEntity.fromModelLogin(await UsuarioRepo.findOne({ where: { nome } }));
-
-      if (!usuario) {
+      const usuarioFind = await UsuarioRepo.findOne({ where: { nome } })
+      if (!usuarioFind) {
         throw new GenericError('usuario nao encontrado', { status: StatusCodes.NOT_FOUND });
       }
+      const usuario = UsuarioEntity.fromModelLogin(usuarioFind);
+      
 
       if (!(await usuario.senhaIsValid(senha))) {
         throw new GenericError('senha incorreta', { status: StatusCodes.UNAUTHORIZED });
