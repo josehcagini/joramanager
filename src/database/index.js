@@ -1,5 +1,5 @@
 import Sequelize from 'sequelize';
-import databaseConfig from '../config/database.js';
+import databaseConfig from '../config/database/database.js';
 import Usuario from '../model/Usuario.js';
 import Grupo from '../model/Grupo.js';
 import Permissao from '../model/Permissao.js';
