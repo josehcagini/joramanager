@@ -1,8 +1,8 @@
 import { StatusCodes } from 'http-status-codes';
 import jwt from 'jsonwebtoken';
-import GenericError from '../error/GenericError';
-import UsuarioRepo from '../repository/UsuarioRepo';
-import UsuarioEntity from '../entity/UsuarioEntity';
+import GenericError from '../error/GenericError.js';
+import UsuarioRepo from '../repository/UsuarioRepo.js';
+import UsuarioEntity from '../entity/UsuarioEntity.js';
 
 async function AuthToken(req, res, next) {
   try {
@@ -12,7 +12,7 @@ async function AuthToken(req, res, next) {
       throw new GenericError('login required', { status: StatusCodes.UNAUTHORIZED });
     }
 
-    const [, token] = authorization.split[' '];
+    const [, token] = authorization.split(' ');
 
     const secretKey = process.env.TOKEN_SECRET;
 

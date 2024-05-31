@@ -12,7 +12,7 @@ class UsuarioRepo {
         return res;
       }
 
-      const usuario = UsuarioEntity.fromModel(res.toJSON());
+      const usuario = res.toJSON();
 
       return usuario;
     } catch (error) {

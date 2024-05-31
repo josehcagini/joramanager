@@ -5,7 +5,7 @@ class GrupoEntity {
     this.permissoes = grupo.permissoes;
   }
 
-  fromModel(grupoModel) {
+  static fromModel(grupoModel) {
     return new GrupoEntity(grupoModel);
   }
 }

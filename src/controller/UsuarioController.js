@@ -6,7 +6,7 @@ import UsuarioEntity from '../entity/UsuarioEntity.js';
 import GrupoController from './GrupoController.js';
 
 class UsuarioController {
-  static async validarNovoUsuario(novoUsuario) {
+  async validarNovoUsuario(novoUsuario) {
     if (!novoUsuario) {
       throw new GenericError('corpo da requisicao nao possui usuario', { status: StatusCodes.BAD_REQUEST });
     }
@@ -30,8 +30,15 @@ class UsuarioController {
     }
   }
 
-  static async hasAccess(tipoOperacao, usuario) {
-    return GrupoController.hasAccess(tipoOperacao, usuario.grupo_id);
+  async hasAccess(tipoOperacao, usuario) {
+    try {
+      const hasAccessUsuario = await GrupoController.hasAccess(tipoOperacao, usuario.grupo_id);
+      console.log('tem acesso?', hasAccessUsuario);
+      return hasAccessUsuario;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
   }
 
   async store(req, res) {

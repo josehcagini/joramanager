@@ -1,11 +1,11 @@
 import { StatusCodes } from 'http-status-codes';
-import GenericError from '../error/GenericError';
-import UsuarioController from '../controller/UsuarioController';
+import GenericError from '../error/GenericError.js';
+import UsuarioController from '../controller/UsuarioController.js';
 
 function hasAccess(tipoOperacao) {
-  return (req, res, next) => {
+  return async (req, res, next) => {
     try {
-      if (UsuarioController.hasAccess(tipoOperacao, req.usuario)) {
+      if ((await UsuarioController.hasAccess(tipoOperacao, req.usuario))) {
         return next();
       }
       throw new GenericError('nao autorizado', {

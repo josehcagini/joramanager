@@ -12,6 +12,7 @@ import helmet from 'helmet';
 import swaggerDocument from './swagger-doc.js';
 
 import UsuarioRoute from './router/UsuarioRoute.js';
+import LoginRoute from './router/LoginRoute.js';
 
 const currentdirname = dirname(fileURLToPath(import.meta.url));
 const pathEnv = join(currentdirname, '..', '.env');
@@ -39,6 +40,7 @@ class App {
 
   routes() {
     this.app.use('/usuario', UsuarioRoute);
+    this.app.use('/login', LoginRoute);
   }
 
   routeTeste() {

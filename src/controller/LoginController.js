@@ -1,11 +1,11 @@
 import { StatusCodes } from 'http-status-codes';
 import jwt from 'jsonwebtoken';
-import GenericError from '../error/GenericError';
-import UsuarioRepo from '../repository/UsuarioRepo';
-import UsuarioEntity from '../entity/UsuarioEntity';
+import GenericError from '../error/GenericError.js';
+import UsuarioRepo from '../repository/UsuarioRepo.js';
+import UsuarioEntity from '../entity/UsuarioEntity.js';
 
 class LoginController {
-  async generateToken(usuario) {
+  static generateToken(usuario) {
     const payload = {
       id: usuario.id,
       nome: usuario.nome,
@@ -32,11 +32,11 @@ class LoginController {
         throw new GenericError('usuario nao encontrado', { status: StatusCodes.NOT_FOUND });
       }
 
-      if (!usuario.senhaIsValid(senha)) {
+      if (!(await usuario.senhaIsValid(senha))) {
         throw new GenericError('senha incorreta', { status: StatusCodes.UNAUTHORIZED });
       }
 
-      const token = this.generateToken(usuario);
+      const token = LoginController.generateToken(usuario);
 
       const retjson = {
         token,
