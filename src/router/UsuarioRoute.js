@@ -7,10 +7,10 @@ import TipoOperacaoEnum from '../enum/TipoOperacaoEnum.js';
 
 const router = new Router();
 
-router.post('/', UsuarioController.store);
-router.get('/:usuarioId', UsuarioController.show);
-router.get('/', UsuarioController.index);
+router.post('/', AuthToken, hasAccess([TipoOperacaoEnum.CREATE]), UsuarioController.store);
+router.get('/:usuarioId', AuthToken, hasAccess([TipoOperacaoEnum.RETRIEVEOTHERS, TipoOperacaoEnum.RETRIEVESELF]), UsuarioController.show);
+router.get('/', AuthToken, hasAccess([TipoOperacaoEnum.RETRIEVEOTHERS]), UsuarioController.index);
 router.delete('/:usuarioId', AuthToken, hasAccess([TipoOperacaoEnum.DELETEOTHERS]), UsuarioController.delete);
-router.put('/:usuarioId', UsuarioController.update);
+router.put('/:usuarioId', AuthToken, hasAccess([TipoOperacaoEnum.UPDATEOTHERS, TipoOperacaoEnum.UPDATESELF]), UsuarioController.update);
 
 export default router;
