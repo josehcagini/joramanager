@@ -7,9 +7,6 @@ const pathEnv = join(currentDirname, '..', '..', '..', '.env');
 
 dotenv.config({ path: pathEnv });
 
-// console.log(pathEnv)
-// console.log(process.env.DATABASE_HOST)
-
 module.exports = {
   dialect: 'postgres',
   host: process.env.DATABASE_HOST,

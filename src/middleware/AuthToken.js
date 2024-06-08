@@ -32,8 +32,6 @@ async function AuthToken(req, res, next) {
     */
     return next();
   } catch (error) {
-    console.log(error);
-
     const status = error.status ? error.status : StatusCodes.INTERNAL_SERVER_ERROR;
 
     return res.status(status).json({

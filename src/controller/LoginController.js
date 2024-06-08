@@ -46,8 +46,6 @@ class LoginController {
       };
       return res.status(StatusCodes.OK).json(retjson);
     } catch (error) {
-      console.log(error);
-
       const status = error.status ? error.status : StatusCodes.INTERNAL_SERVER_ERROR;
 
       return res.status(status).json({

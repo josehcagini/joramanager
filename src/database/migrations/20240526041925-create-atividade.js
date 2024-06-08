@@ -27,6 +27,15 @@ module.exports = {
             schema: 'dba',
           },
         },
+        atividade_pai_id: {
+          type: Sequelize.INTEGER,
+          allowNull: true,
+          references: {
+            model: 'atividade',
+            key: 'id',
+            schema: 'dba',
+          },
+        },
         dtentrega: {
           type: Sequelize.DATE,
           allowNull: false,

@@ -5,7 +5,7 @@ import GrupoRepo from '../repository/GrupoRepo.js';
 class GrupoController {
   async hasAccess(tipoOperacao, grupoId) {
     try {
-      const grupo = await GrupoRepo.findByPk(grupoId);
+      const grupo = await GrupoRepo.findByPk(grupoId, true);
 
       if (!grupo) {
         throw new GenericError('grupo nao encontrado', { status: StatusCodes.NOT_FOUND });
@@ -13,7 +13,6 @@ class GrupoController {
 
       // eslint-disable-next-line max-len
       const grupoPermissao = grupo.permissoes.find((permissao) => tipoOperacao.includes(permissao.tipoOperacao) && (!permissao.bloqueado));
-      console.log(grupoPermissao);
       return !!grupoPermissao;
     } catch (error) {
       return false;

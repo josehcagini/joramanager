@@ -35,8 +35,7 @@ export default class Atividade extends Model {
   }
 
   static associate(models) {
-    this.hasMany(models.Atividade, { foreignKey: 'atividade_filha_id' });
-    this.belongsTo(models.Atividade, { foreignKey: 'atividade_filha_id' });
+    this.hasOne(models.Atividade, { foreignKey: 'atividade_pai_id' });
 
     this.belongsTo(models.Usuario, { foreignKey: 'usuario_id' });
     this.hasMany(models.Artefato, { foreignKey: 'atividade_id' });

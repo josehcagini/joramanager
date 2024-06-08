@@ -16,24 +16,24 @@ class GrupoRepo {
 
       const permissoes = res.map((permissao) => permissao.toJSON());
 
-      permissoes.forEach(async (permissao) => {
+      const permissoesGrupo = await Promise.all(permissoes.map(async (permissao) => {
         const resPermissao = await Permissao.findByPk(permissao.PermissaoId);
-        console.log('permissao teste ', resPermissao);
         const permissaoDescr = resPermissao.toJSON();
 
         permissao.descricao = permissaoDescr.descricao;
         permissao.tipoOperacao = permissaoDescr.tipo_operacao;
         permissao.modulo = permissaoDescr.modulo;
-      });
 
-      grupo.permissoes = permissoes;
+        return permissao;
+      }));
+
+      grupo.permissoes = permissoesGrupo;
     } catch (error) {
-      console.log(error);
       throw new GenericError(error.message, { status: StatusCodes.INTERNAL_SERVER_ERROR });
     }
   }
 
-  async findByPk(grupoId) {
+  async findByPk(grupoId, retrievePermissao = false) {
     let grupo;
 
     try {
@@ -42,9 +42,8 @@ class GrupoRepo {
         return res;
       }
       grupo = GrupoEntity.fromModel(res.toJSON());
-      await this.retrievePermissao(grupo);
+      if (retrievePermissao) await this.retrievePermissao(grupo);
     } catch (error) {
-      console.log(error);
       throw new GenericError(
         error.message,
         { status: error.status ? error.status : StatusCodes.INTERNAL_SERVER_ERROR },

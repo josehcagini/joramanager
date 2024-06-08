@@ -13,10 +13,6 @@ export default class Permissao extends Model {
           },
         },
       },
-      bloqueado: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: true,
-      },
       tipo_operacao: {
         type: Sequelize.STRING,
         defaultValue: '',

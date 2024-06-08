@@ -33,10 +33,8 @@ class UsuarioController {
   async hasAccess(tipoOperacao, usuario) {
     try {
       const hasAccessUsuario = await GrupoController.hasAccess(tipoOperacao, usuario.grupo_id);
-      console.log('tem acesso?', hasAccessUsuario);
       return hasAccessUsuario;
     } catch (error) {
-      console.log(error);
       return false;
     }
   }
@@ -63,8 +61,6 @@ class UsuarioController {
 
       return res.status(StatusCodes.CREATED).json(retjson);
     } catch (error) {
-      console.log(error);
-
       const status = error.status ? error.status : StatusCodes.INTERNAL_SERVER_ERROR;
 
       return res.status(status).json({
@@ -91,8 +87,6 @@ class UsuarioController {
 
       return res.status(StatusCodes.OK).json({ usuarios: usuario });
     } catch (error) {
-      console.log(error);
-
       const status = error.status ? error.status : StatusCodes.INTERNAL_SERVER_ERROR;
       const retjson = {
         error: {
@@ -113,8 +107,6 @@ class UsuarioController {
 
       return res.status(StatusCodes.OK).json(usuarios);
     } catch (error) {
-      console.log(error);
-
       const status = error.status ? error.status : StatusCodes.INTERNAL_SERVER_ERROR;
       const retjson = {
         error: {
@@ -169,8 +161,6 @@ class UsuarioController {
       const camposUpdate = UsuarioEntity.parse(valuesUpdate);
 
       const usuarioUpdate = await UsuarioRepo.update(usuarioId, camposUpdate);
-
-      console.log('retorno', usuarioUpdate);
 
       return res.status(StatusCodes.OK).json(usuarioUpdate);
     } catch (error) {
