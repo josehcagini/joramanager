@@ -44,7 +44,13 @@ class AtividadeController {
   
         await AtividadeController.validarNovaAtividade(atividade);
   
-        const atividadeSave = AtividadeEntity.fromJson(atividade);
+        const atividadeSave = AtividadeEntity.fromJson(atividade, {
+          include: [
+            {
+              association: "artefato",
+            },
+          ],
+        });
   
         const novoAtividade = await AtividadeRepo.create(atividadeSave);
   
