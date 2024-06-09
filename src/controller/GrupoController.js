@@ -21,6 +21,38 @@ class GrupoController {
       );
     }
   }
+
+  async exists(grupoId) {
+    try {
+      const grupo = await GrupoRepo.findByPk(grupoId);
+      return !!grupo;
+    } catch (error) {
+      console.log('GrupoController.exists');
+      console.log(error);
+      return false;
+    }
+  }
+
+  async getGrupoPadrao() {
+    try {
+      const whereDev = {
+        where: {
+          nome: 'dev',
+        },
+      };
+
+      const grupo = await GrupoRepo.findOne(whereDev);
+
+      return grupo.id;
+    } catch (error) {
+      console.log('GrupoController.getGrupoPadrao');
+      console.log(error);
+      throw new GenericError(
+        error.message,
+        { status: error.status ? error.status : StatusCodes.INTERNAL_SERVER_ERROR },
+      );
+    }
+  }
 }
 
 export default new GrupoController();

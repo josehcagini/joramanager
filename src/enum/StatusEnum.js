@@ -1,15 +1,15 @@
 class StatusEnum {
-    constructor(code) {
-        this.code = code;
-    }
+  constructor(code) {
+    this.code = code;
+  }
 
-    static fromCode(code) {
-        return Object.values(StatusEnum).find(status => status.code === code);
-    }
+  static fromCode(code) {
+    return Object.values(StatusEnum).find((status) => status.code === code);
+  }
 
-    static isValidCode(code) {
-        return Object.values(StatusEnum).some(status => status.code === code);
-    }
+  static isValidCode(code) {
+    return Object.values(StatusEnum).some((status) => status.code === code);
+  }
 }
 
 StatusEnum.PENDENTE = new StatusEnum(0);
