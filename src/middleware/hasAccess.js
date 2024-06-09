@@ -2,10 +2,13 @@ import { StatusCodes } from 'http-status-codes';
 import GenericError from '../error/GenericError.js';
 import UsuarioController from '../controller/UsuarioController.js';
 
-function hasAccess(tipoOperacao) {
+function hasAccess(tipoOperacao, modulo) {
   return async (req, res, next) => {
     try {
-      if ((await UsuarioController.hasAccess(tipoOperacao, req.usuario))) {
+      const permissoes = await UsuarioController.hasAccess(tipoOperacao, modulo, req.usuario);
+
+      if (permissoes.length > 0) {
+        req.permissoes = permissoes;
         return next();
       }
       throw new GenericError('nao autorizado', {
@@ -15,6 +18,7 @@ function hasAccess(tipoOperacao) {
         },
       });
     } catch (error) {
+      console.log(error);
       const status = error.status ? error.status : StatusCodes.INTERNAL_SERVER_ERROR;
 
       return res.status(status).json({

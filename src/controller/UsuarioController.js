@@ -4,6 +4,7 @@ import GenericError from '../error/GenericError.js';
 import UsuarioRepo from '../repository/UsuarioRepo.js';
 import UsuarioEntity from '../entity/UsuarioEntity.js';
 import GrupoController from './GrupoController.js';
+import TipoOperacaoEnum from '../enum/TipoOperacaoEnum.js';
 
 class UsuarioController {
   static async validarNovoUsuario(novoUsuario) {
@@ -30,13 +31,33 @@ class UsuarioController {
     }
   }
 
-  async hasAccess(tipoOperacao, usuario) {
+  async hasAccess(tipoOperacao, modulo, usuario) {
     try {
-      const hasAccessUsuario = await GrupoController.hasAccess(tipoOperacao, usuario.grupo_id);
-      return hasAccessUsuario;
+      const permissoes = await GrupoController.hasAccess(
+        tipoOperacao,
+        modulo,
+        usuario.grupo_id,
+      );
+      return permissoes;
     } catch (error) {
-      return false;
+      throw new GenericError(
+        error.message,
+        { status: error.status ? error.status : StatusCodes.INTERNAL_SERVER_ERROR },
+      );
     }
+  }
+
+  static isRequestOther(usuarioRequest, usuarioGet) {
+    console.log('isRequestOther?', usuarioRequest !== usuarioGet);
+    return usuarioRequest !== usuarioGet;
+  }
+
+  static onlyHasAccessToSelf(permissoes) {
+    const retorno = (permissoes.length === 1
+      && !!permissoes.find((permissao) => [TipoOperacaoEnum.RETRIEVESELF, TipoOperacaoEnum.UPDATESELF, TipoOperacaoEnum.DELETESELF].includes(permissao.tipoOperacao)));
+
+    console.log('onlyHasAccessToSelf?', retorno);
+    return retorno;
   }
 
   async store(req, res) {
@@ -83,9 +104,25 @@ class UsuarioController {
         throw new GenericError('request sem usuarioId', { status: StatusCodes.BAD_REQUEST });
       }
 
-      const usuario = await UsuarioRepo.findByPk(usuarioId);
+      console.log(req.permissoes);
 
-      return res.status(StatusCodes.OK).json({ usuarios: usuario });
+      if (
+        UsuarioController.isRequestOther(req.usuario.id, usuarioId)
+        && UsuarioController.onlyHasAccessToSelf(req.permissoes)
+      ) {
+        throw new GenericError('sem permissao', { status: StatusCodes.UNAUTHORIZED });
+      }
+
+      const usuario = UsuarioEntity.fromModel(await UsuarioRepo.findByPk(usuarioId));
+
+      const retjson = {
+        usuario,
+        paths: {
+          home: '/',
+        },
+      };
+
+      return res.status(StatusCodes.OK).json(retjson);
     } catch (error) {
       const status = error.status ? error.status : StatusCodes.INTERNAL_SERVER_ERROR;
       const retjson = {
@@ -156,6 +193,13 @@ class UsuarioController {
       const valuesUpdate = { ...req.body };
       if (!valuesUpdate) {
         throw new GenericError('body vazio', { status: StatusCodes.BAD_REQUEST });
+      }
+
+      if (
+        UsuarioController.isRequestOther(req.usuario.id, usuarioId)
+        && UsuarioController.onlyHasAccessToSelf(req.permissoes)
+      ) {
+        throw new GenericError('sem permissao', { status: StatusCodes.UNAUTHORIZED });
       }
 
       const camposUpdate = UsuarioEntity.parse(valuesUpdate);
