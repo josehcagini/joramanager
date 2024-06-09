@@ -6,7 +6,7 @@ import AtividadeEntity from '../entity/AtividadeEntity.js';
 import StatusEnum from '../enum/StatusEnum.js'
 
 class AtividadeController {
-    static async validarNovoAtividade(novaAtividade) {
+    static async validarNovaAtividade(novaAtividade) {
       if (!novaAtividade) {
         throw new GenericError('corpo da requisicao nao possui atividade', { status: StatusCodes.BAD_REQUEST });
       }
@@ -42,9 +42,9 @@ class AtividadeController {
       try {
         const { atividade } = req.body;
   
-        await AtividadeController.validarNovoAtividade(atividade);
+        await AtividadeController.validarNovaAtividade(atividade);
   
-        const atividadeSave = AtividadeEntity.parse(atividade);
+        const atividadeSave = AtividadeEntity.fromJson(atividade);
   
         const novoAtividade = await AtividadeRepo.create(atividadeSave);
   
@@ -162,7 +162,7 @@ class AtividadeController {
           throw new GenericError('body vazio', { status: StatusCodes.BAD_REQUEST });
         }
   
-        const camposUpdate = AtividadeEntity.parse(valuesUpdate);
+        const camposUpdate = AtividadeEntity.fromJson(valuesUpdate);
   
         const atividadeUpdate = await AtividadeRepo.update(atividadeId, camposUpdate);
   
