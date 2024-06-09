@@ -31,7 +31,7 @@ class UsuarioRepo {
       if (!res) {
         return res;
       }
-      usuario = UsuarioEntity.fromModel(res.toJSON());
+      usuario = res.toJSON();
     } catch (error) {
       throw new GenericError(
         error.message,

@@ -17,13 +17,18 @@ class UsuarioEntity {
   }
 
   static fromModel(usuarioModel) {
-    const usuarioParse = {
-      id: usuarioModel.id,
-      nome: usuarioModel.nome,
-      grupo_id: usuarioModel.grupo_id,
-    };
-
-    return new UsuarioEntity(usuarioParse);
+    try {
+      if (!usuarioModel) return {};
+      const usuarioParse = {
+        id: usuarioModel.id,
+        nome: usuarioModel.nome,
+        grupo_id: usuarioModel.grupo_id,
+      };
+      return new UsuarioEntity(usuarioParse);
+    } catch (error) {
+      console.log(error);
+      return {};
+    }
   }
 
   static fromModelLogin(usuarioModel) {
