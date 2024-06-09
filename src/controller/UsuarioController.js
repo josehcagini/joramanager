@@ -24,10 +24,35 @@ class UsuarioController {
       throw new GenericError('nome ja em uso', { status: StatusCodes.CONFLICT });
     }
 
-    if (novoUsuario.grupo_id) {
-      // validar se tem foi passado grupo, validar se o grupo existe
+    if (novoUsuario.grupoId) {
+      if (typeof novoUsuario.grupoId !== 'number') {
+        throw new GenericError('grupoId deve ser um numero ', { status: StatusCodes.BAD_REQUEST });
+      }
 
-      throw new GenericError('grupo nao existe ', { status: StatusCodes.NOT_FOUND });
+      if (!await GrupoController.exists(novoUsuario.grupoId)) {
+        throw new GenericError('grupo nao existe ', { status: StatusCodes.NOT_FOUND });
+      }
+    } else {
+      novoUsuario.grupoId = await GrupoController.getGrupoPadrao();
+    }
+  }
+
+  static async validarUpdateUsuario(usuarioUpdate) {
+    const usuarioExiste = await UsuarioRepo.findOne({ where: { nome: usuarioUpdate.nome } });
+
+    if (usuarioExiste && usuarioExiste.id !== usuarioUpdate.usuarioId) {
+      throw new GenericError('nome ja em uso', { status: StatusCodes.CONFLICT });
+    }
+
+    if (usuarioUpdate.grupoId) {
+      const grupoId = Number(usuarioUpdate.grupoId);
+      if (!grupoId) {
+        throw new GenericError('grupoId deve ser um numero ', { status: StatusCodes.BAD_REQUEST });
+      }
+
+      if (!await GrupoController.exists(grupoId)) {
+        throw new GenericError('grupo nao existe ', { status: StatusCodes.NOT_FOUND });
+      }
     }
   }
 
@@ -185,12 +210,12 @@ class UsuarioController {
 
   async update(req, res) {
     try {
-      const { usuarioId } = { ...req.params };
+      const usuarioId = Number(req.params.usuarioId);
       if (!usuarioId) {
         throw new GenericError('usuarioId nao enviado', { status: StatusCodes.BAD_REQUEST });
       }
 
-      const valuesUpdate = { ...req.body };
+      const valuesUpdate = req.body;
       if (!valuesUpdate) {
         throw new GenericError('body vazio', { status: StatusCodes.BAD_REQUEST });
       }
@@ -202,11 +227,20 @@ class UsuarioController {
         throw new GenericError('sem permissao', { status: StatusCodes.UNAUTHORIZED });
       }
 
+      await UsuarioController.validarUpdateUsuario({ usuarioId, ...valuesUpdate });
+
       const camposUpdate = UsuarioEntity.parse(valuesUpdate);
 
       const usuarioUpdate = await UsuarioRepo.update(usuarioId, camposUpdate);
 
-      return res.status(StatusCodes.OK).json(usuarioUpdate);
+      const retjson = {
+        usuario: usuarioUpdate,
+        paths: {
+          home: '/',
+        },
+      };
+
+      return res.status(StatusCodes.OK).json(retjson);
     } catch (error) {
       const status = error.status ? error.status : StatusCodes.INTERNAL_SERVER_ERROR;
       const retjson = {

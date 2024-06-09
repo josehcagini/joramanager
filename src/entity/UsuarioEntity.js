@@ -11,7 +11,7 @@ class UsuarioEntity {
   }
 
   static parse(usuario) {
-    const usuarioParse = { nome: usuario.nome, senha: usuario.senha, grupo_id: usuario.grupo_id };
+    const usuarioParse = { nome: usuario.nome, senha: usuario.senha, grupo_id: usuario.grupoId };
 
     return new UsuarioEntity(usuarioParse);
   }

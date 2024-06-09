@@ -52,6 +52,24 @@ class GrupoRepo {
 
     return grupo;
   }
+
+  async findOne(options) {
+    try {
+      const res = await Grupo.findOne(options);
+
+      if (!res) {
+        return res;
+      }
+
+      const grupo = res.toJSON();
+      return grupo;
+    } catch (error) {
+      throw new GenericError(
+        error.message,
+        { status: error.status ? error.status : StatusCodes.INTERNAL_SERVER_ERROR },
+      );
+    }
+  }
 }
 
 export default new GrupoRepo();
