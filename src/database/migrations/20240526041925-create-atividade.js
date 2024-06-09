@@ -36,6 +36,10 @@ module.exports = {
             schema: 'dba',
           },
         },
+        status: {
+          type: Sequelize.INTEGER,
+          allowNull: false,
+        },
         dtentrega: {
           type: Sequelize.DATE,
           allowNull: false,

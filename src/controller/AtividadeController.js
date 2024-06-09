@@ -3,6 +3,7 @@ import GenericError from '../error/GenericError.js';
 
 import AtividadeRepo from '../repository/AtividadeRepo.js';
 import AtividadeEntity from '../entity/AtividadeEntity.js';
+import StatusEnum from '../enum/StatusEnum.js'
 
 class AtividadeController {
     static async validarNovoAtividade(novaAtividade) {
@@ -24,6 +25,10 @@ class AtividadeController {
 
       if (!novaAtividade.usuario_id) {
         throw new GenericError('atividade nao possui data de usuario', { status: StatusCodes.BAD_REQUEST });
+      }
+
+      if(StatusEnum.isValidCode(novaAtividade.status)) {
+        throw new GenericError('atividade nao possui status', { status: StatusCodes.BAD_REQUEST });
       }
   
       const atividadeExiste = await AtividadeRepo.findOne({ where: { titulo: novaAtividade.titulo } });

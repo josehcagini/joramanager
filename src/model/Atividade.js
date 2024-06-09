@@ -23,6 +23,10 @@ export default class Atividade extends Model {
           },
         },
       },
+      status: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0,
+      },
       dtEntrega: {
         type: Sequelize.DATE,
       },
