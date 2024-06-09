@@ -19,6 +19,21 @@ const pathEnv = join(currentdirname, '..', '.env');
 
 dotenv.config({ path: pathEnv });
 
+const whiteList = [
+  'http://localhost:3000',
+  'http://localhost:3001',
+];
+
+const corsOptions = {
+  origin(origin, callBack) {
+    if (whiteList.indexOf(origin) !== -1 || !origin) {
+      callBack(null, true);
+    } else {
+      callBack(new Error('Not allowed by CORS'));
+    }
+  },
+};
+
 class App {
   constructor() {
     this.app = express();
@@ -29,7 +44,7 @@ class App {
 
   midlleswares() {
     this.app.use(express.json());
-    this.app.use(cors({}));
+    this.app.use(cors(corsOptions));
     this.app.use(helmet({
       contentSecurityPolicy: false,
       crossOriginEmbedderPolicy: false,
