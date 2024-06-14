@@ -1,5 +1,5 @@
 import GenericError from '../error/GenericError.js';
-
+import {StatusCodes} from 'http-status-codes';
 import ArtefatoRepo from '../repository/ArtefatoRepo.js';
 import ArtefatoEntity from '../entity/ArtefatoEntity.js';
 

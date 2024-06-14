@@ -13,6 +13,9 @@ import swaggerDocument from './config/swagger-doc.js';
 
 import UsuarioRoute from './router/UsuarioRoute.js';
 import LoginRoute from './router/LoginRoute.js';
+import AtividadeRoute from './router/AtividadeRoute.js';
+import ArtefatoRoute from './router/ArtefatoRoute.js';
+
 import GrupoRoute from './router/GrupoRoute.js';
 
 const currentdirname = dirname(fileURLToPath(import.meta.url));
@@ -57,6 +60,8 @@ class App {
   routes() {
     this.app.use('/usuario', UsuarioRoute);
     this.app.use('/login', LoginRoute);
+    this.app.use('/atividade', AtividadeRoute);
+    this.app.use('/artefato', ArtefatoRoute);
     this.app.use('/grupo', GrupoRoute);
   }
 

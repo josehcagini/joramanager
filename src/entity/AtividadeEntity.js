@@ -1,15 +1,15 @@
-import StatusEnum from "../enum/StatusEnum";
-import ArtefatoEntity from "./ArtefatoEntity";
+import StatusEnum from "../enum/StatusEnum.js";
+import ArtefatoEntity from "./ArtefatoEntity.js";
 
 class AtividadeEntity {
     constructor() {
         this.titulo = "";
         this.descricao = "";
         this.status = StatusEnum.PENDENTE;
-        this.dtEntrega = null;
+        this.dtentrega = null;
         this.atividade_pai_id = null;
         this.usuario_id = null;
-        this.artefato = null;
+        this.artefato = [];
     }
 
     getId() {
@@ -45,11 +45,11 @@ class AtividadeEntity {
     }
 
     getDtEntrega() {
-        return this.dtEntrega;
+        return this.dtentrega;
     }
 
-    setDtEntrega(dtEntrega) {
-        this.dtEntrega = dtEntrega;
+    setDtEntrega(dtentrega) {
+        this.dtentrega = dtentrega;
     }
 
     getUsuarioId() {
@@ -69,7 +69,7 @@ class AtividadeEntity {
     }
 
     getArtefato() {
-        return this.getArtefato;
+        return this.artefato;  // Corrigido para retornar this.artefato
     }
 
     setArtefato(artefato) {
@@ -81,11 +81,11 @@ class AtividadeEntity {
             titulo: this.titulo,
             descricao: this.descricao,
             status: this.status,
-            dtEntrega: this.dtEntrega,
+            dtentrega: this.dtentrega,
             atividade_pai_id: this.atividade_pai_id,
             usuario_id: this.usuario_id,
-            artefato: this.artefato
-        }
+            artefato: this.artefato.map((artefato) => artefato.toModel())
+        };
     }
 
     toJson() {
@@ -94,11 +94,11 @@ class AtividadeEntity {
             titulo: this.titulo,
             descricao: this.descricao,
             status: this.status,
-            dtEntrega: this.dtEntrega,
+            dtentrega: this.dtentrega,
             atividade_pai_id: this.atividade_pai_id,
             usuario_id: this.usuario_id,
-            artefato: this.artefato
-        }
+            artefato: this.artefato.map((artefato) => artefato.toJson())
+        };
     }
 
     static fromModel(atividade) {
@@ -108,12 +108,12 @@ class AtividadeEntity {
         atividadeEntity.setTitulo(atividade.titulo);
         atividadeEntity.setDescricao(atividade.descricao);
         atividadeEntity.setStatus(atividade.status);
-        atividadeEntity.setDtEntrega(atividade.dtEntrega);
+        atividadeEntity.setDtEntrega(atividade.dtentrega);
         atividadeEntity.setAtividadePaiId(atividade.atividade_pai_id);
         atividadeEntity.setUsuarioId(atividade.usuario_id);
         atividadeEntity.setArtefato(atividade.artefato?.map((artefato) => ArtefatoEntity.fromModel(artefato)));
 
-        return atividadeEntity
+        return atividadeEntity;
     }
 
     static fromJson(atividade) {
@@ -122,12 +122,17 @@ class AtividadeEntity {
         atividadeEntity.setTitulo(atividade.titulo);
         atividadeEntity.setDescricao(atividade.descricao);
         atividadeEntity.setStatus(atividade.status);
-        atividadeEntity.setDtEntrega(atividade.dtEntrega);
+        atividadeEntity.setDtEntrega(atividade.dtentrega);
         atividadeEntity.setAtividadePaiId(atividade.atividade_pai_id);
         atividadeEntity.setUsuarioId(atividade.usuario_id);
-        atividadeEntity.setArtefato(atividade.artefato?.map((artefato) => ArtefatoEntity.fromModel(artefato)));
+        
+        if (atividade.artefato) {
+            atividadeEntity.setArtefato(atividade.artefato.map((artefato) => ArtefatoEntity.fromJson(artefato)));
+        } else {
+            atividadeEntity.setArtefato([]);
+        }
 
-        return atividadeEntity
+        return atividadeEntity;
     }
 }
 

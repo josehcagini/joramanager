@@ -4,6 +4,25 @@ import GenericError from '../error/GenericError.js';
 import AtividadeEntity from '../entity/AtividadeEntity.js';
 
 class AtividadeRepo {
+  async findOne(options) {
+    try {
+      const res = await Atividade.findOne(options);
+
+      if (!res) {
+        return res;
+      }
+
+      const atividade = AtividadeEntity.fromModel(res.toJSON());
+
+      return atividade;
+    } catch (error) {
+      throw new GenericError(
+        error.message,
+        { status: error.status ? error.status : StatusCodes.INTERNAL_SERVER_ERROR },
+      );
+    }
+  }
+
   async findByPk(atividadeId) {
     let atividade;
 
