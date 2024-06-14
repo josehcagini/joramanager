@@ -5,6 +5,15 @@ import appConfig from '../config/appConfig.js';
 export default class Artefato extends Model {
   static init(sequelize) {
     super.init({
+      atividade_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: 'campo nao pode ser vazio',
+          },
+        },
+      },
       titulo: {
         type: Sequelize.STRING,
         defaultValue: '',

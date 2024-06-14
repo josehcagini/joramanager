@@ -3,6 +3,25 @@ import GenericError from '../error/GenericError.js';
 import ArtefatoEntity from '../entity/ArtefatoEntity.js';
 
 class ArtefatoRepo {
+  async findOne(options) {
+    try {
+      const res = await Artefato.findOne(options);
+
+      if (!res) {
+        return res;
+      }
+
+      const artefato = ArtefatoEntity.fromModel(res.toJSON());
+
+      return artefato;
+    } catch (error) {
+      throw new GenericError(
+        error.message,
+        { status: error.status ? error.status : StatusCodes.INTERNAL_SERVER_ERROR },
+      );
+    }
+  }
+
   async findByPk(artefatoId) {
     let artefato;
 

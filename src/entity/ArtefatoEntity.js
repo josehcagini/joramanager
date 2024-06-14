@@ -5,6 +5,7 @@ class ArtefatoEntity {
         this.originalname = "";
         this.filename = "";
         this.url = null;
+        this.atividade_id = null;
     }
 
     getId() {
@@ -55,13 +56,22 @@ class ArtefatoEntity {
         this.url = url;
     }
 
+    getAtividadeId() {
+        return this.atividade_id;
+    }
+
+    setAtividadeId(atividade_id) {
+        this.atividade_id = atividade_id;
+    }
+
     toModel() {
         return {
             titulo: this.titulo,
             descricao: this.descricao,
             originalname: this.originalname,
             filename: this.filename,
-            url: this.url
+            url: this.url,
+            atividade_id: this.atividade_id
         }
     }
 
@@ -72,7 +82,8 @@ class ArtefatoEntity {
             descricao: this.descricao,
             originalname: this.originalname,
             filename: this.filename,
-            url: this.url
+            url: this.url,
+            atividade_id: this.atividade_id
         }
     }
 
@@ -85,6 +96,7 @@ class ArtefatoEntity {
         artefatoEntity.setOriginalName(artefato.originalname);
         artefatoEntity.setFileName(artefato.filename);
         artefatoEntity.setUrl(artefato.url);
+        artefatoEntity.setAtividadeId(artefato.atividade_id);
 
         return artefatoEntity
     }
@@ -97,6 +109,7 @@ class ArtefatoEntity {
         artefatoEntity.setOriginalName(artefato.originalname);
         artefatoEntity.setFileName(artefato.filename);
         artefatoEntity.setUrl(artefato.url);
+        artefatoEntity.setAtividadeId(artefato.atividade_id);
 
         return artefatoEntity
     }

@@ -4,6 +4,7 @@ import GenericError from '../error/GenericError.js';
 import AtividadeRepo from '../repository/AtividadeRepo.js';
 import AtividadeEntity from '../entity/AtividadeEntity.js';
 import StatusEnum from '../enum/StatusEnum.js'
+import ArtefatoController from './ArtefatoController.js'
 
 class AtividadeController {
     static async validarNovaAtividade(novaAtividade) {
@@ -19,7 +20,7 @@ class AtividadeController {
         throw new GenericError('atividade nao possui descricao', { status: StatusCodes.BAD_REQUEST });
       }
 
-      if (!novaAtividade.dtEntrega) {
+      if (!novaAtividade.dtentrega) {
         throw new GenericError('atividade nao possui data de entrega', { status: StatusCodes.BAD_REQUEST });
       }
 
@@ -27,7 +28,7 @@ class AtividadeController {
         throw new GenericError('atividade nao possui data de usuario', { status: StatusCodes.BAD_REQUEST });
       }
 
-      if(StatusEnum.isValidCode(novaAtividade.status)) {
+      if(!StatusEnum.isValidCode(novaAtividade.status)) {
         throw new GenericError('atividade nao possui status', { status: StatusCodes.BAD_REQUEST });
       }
   
@@ -35,6 +36,14 @@ class AtividadeController {
   
       if (atividadeExiste) {
         throw new GenericError('titulo ja em uso', { status: StatusCodes.CONFLICT });
+      }
+      console.log("Teste 1")
+      if (novaAtividade.artefato) {
+        console.log("Teste 2")
+        for (const artefato of novaAtividade.artefato) {
+            await ArtefatoController.validarNovoArtefato(artefato);
+            console.log("Teste 3")
+        }
       }
     }
 
@@ -44,15 +53,15 @@ class AtividadeController {
   
         await AtividadeController.validarNovaAtividade(atividade);
   
-        const atividadeSave = AtividadeEntity.fromJson(atividade, {
+        const atividadeSave = AtividadeEntity.fromJson(atividade);
+  
+        const novoAtividade = await AtividadeRepo.create(atividadeSave, {
           include: [
             {
               association: "artefato",
             },
           ],
         });
-  
-        const novoAtividade = await AtividadeRepo.create(atividadeSave);
   
         const retjson = {
           novoAtividade: {
