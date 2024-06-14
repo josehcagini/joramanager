@@ -40,6 +40,11 @@ class LoginController {
 
       const retjson = {
         token,
+        usuario: {
+          id: usuario.id,
+          nome: usuario.nome,
+          grupoId: usuario.grupo_id,
+        },
         paths: {
           home: '/',
         },

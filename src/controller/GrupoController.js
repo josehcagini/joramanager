@@ -1,6 +1,8 @@
 import { StatusCodes } from 'http-status-codes';
 import GenericError from '../error/GenericError.js';
 import GrupoRepo from '../repository/GrupoRepo.js';
+import ModuloEnum from '../enum/ModuloEnum.js';
+import TipoOperacaoEnum from '../enum/TipoOperacaoEnum.js';
 
 class GrupoController {
   async hasAccess(tipoOperacao, modulo, grupoId) {
@@ -51,6 +53,31 @@ class GrupoController {
         error.message,
         { status: error.status ? error.status : StatusCodes.INTERNAL_SERVER_ERROR },
       );
+    }
+  }
+
+  async getAcessos(req, res) {
+    try {
+      const { grupoId } = req.params;
+
+      const grupoPermissoes = await GrupoRepo.findByPk(grupoId, true);
+
+      const acessos = {
+        registrarUsuario: grupoPermissoes.permissoes.find((permissao) => (
+          permissao.modulo === ModuloEnum.USUARIO
+          && permissao.tipoOperacao === TipoOperacaoEnum.CREATE
+          && !permissao.bloqueado
+        )),
+      };
+
+      const retjson = {
+        acessos,
+      };
+      return res.status(StatusCodes.OK).json(retjson);
+    } catch (error) {
+      const status = GenericError.getStatusCode(error);
+      const retjson = GenericError.getJsonError(error);
+      return res.status(status).json(retjson);
     }
   }
 }

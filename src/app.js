@@ -9,12 +9,14 @@ import swaggerUI from 'swagger-ui-express';
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
-import swaggerDocument from './swagger-doc.js';
+import swaggerDocument from './config/swagger-doc.js';
 
 import UsuarioRoute from './router/UsuarioRoute.js';
 import LoginRoute from './router/LoginRoute.js';
 import AtividadeRoute from './router/AtividadeRoute.js';
 import ArtefatoRoute from './router/ArtefatoRoute.js';
+
+import GrupoRoute from './router/GrupoRoute.js';
 
 const currentdirname = dirname(fileURLToPath(import.meta.url));
 const pathEnv = join(currentdirname, '..', '.env');
@@ -60,6 +62,7 @@ class App {
     this.app.use('/login', LoginRoute);
     this.app.use('/atividade', AtividadeRoute);
     this.app.use('/artefato', ArtefatoRoute);
+    this.app.use('/grupo', GrupoRoute);
   }
 
   routeTeste() {

@@ -25,6 +25,7 @@ async function AuthToken(req, res, next) {
     }
 
     req.usuario = usuario;
+    console.log(usuario);
     /*
     req.usuarioId = usuario.id;
     req.usuarioNome = usuario.nome;
