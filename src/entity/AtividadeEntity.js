@@ -69,7 +69,7 @@ class AtividadeEntity {
     }
 
     getArtefato() {
-        return this.artefato;  // Corrigido para retornar this.artefato
+        return this.artefato;
     }
 
     setArtefato(artefato) {

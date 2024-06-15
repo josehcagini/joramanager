@@ -68,6 +68,9 @@ export default class Artefato extends Model {
   }
 
   static associate(models) {
-    this.belongsTo(models.Atividade, { foreignKey: 'atividade_id' });
+    this.belongsTo(models.Atividade, {
+      foreignKey: 'atividade_id',
+      as: "atividade",
+    });
   }
 }
