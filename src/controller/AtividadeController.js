@@ -3,8 +3,8 @@ import GenericError from '../error/GenericError.js';
 
 import AtividadeRepo from '../repository/AtividadeRepo.js';
 import AtividadeEntity from '../entity/AtividadeEntity.js';
-import StatusEnum from '../enum/StatusEnum.js'
-import ArtefatoController from './ArtefatoController.js'
+import StatusEnum from '../enum/StatusEnum.js';
+import ArtefatoController from './ArtefatoController.js';
 
 class AtividadeController {
     static async validarNovaAtividade(novaAtividade) {
@@ -50,11 +50,11 @@ class AtividadeController {
     async store(req, res) {
       try {
         const { atividade } = req.body;
-  
+        console.log(atividade)
         await AtividadeController.validarNovaAtividade(atividade);
-  
+        console.log(atividade)
         const atividadeSave = AtividadeEntity.fromJson(atividade);
-  
+        console.log(atividade)
         const novoAtividade = await AtividadeRepo.create(atividadeSave, {
           include: [
             {

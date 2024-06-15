@@ -4,7 +4,7 @@ import ArtefatoRepo from '../repository/ArtefatoRepo.js';
 import ArtefatoEntity from '../entity/ArtefatoEntity.js';
 
 class ArtefatoController {
-    static async validarNovoArtefato(novoArtefato) {
+    async validarNovoArtefato(novoArtefato) {
       if (!novoArtefato) {
         throw new GenericError('corpo da requisicao nao possui artefato', { status: StatusCodes.BAD_REQUEST });
       }
