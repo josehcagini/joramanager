@@ -6,6 +6,9 @@ const acessoEnum = {
   HOME: 'home',
   LOGIN: 'login',
   LOGOUT: 'logout',
+  REGISTRARATIVIDADE: 'registrarAtividade',
+  LISTARATIVIDADE: 'listarAtividade',
+  EDITARATIVIDADE: 'editarAtividade',
 };
 
 export function isSelfEdit(option) {

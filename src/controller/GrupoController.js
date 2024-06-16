@@ -90,6 +90,30 @@ class GrupoController {
         && !permissao.bloqueado
       )));
 
+      acessos.set(acessosEnum.REGISTRARATIVIDADE, !!grupoPermissoes.permissoes.find((permissao) => (
+        permissao.modulo === ModuloEnum.ATIVIDADE
+        && permissao.tipoOperacao === TipoOperacaoEnum.CREATE
+        && !permissao.bloqueado
+      )));
+
+      acessos.set(acessosEnum.LISTARATIVIDADE, !!grupoPermissoes.permissoes.find((permissao) => {
+        if (permissao.modulo === ModuloEnum.ATIVIDADE
+        && permissao.tipoOperacao === TipoOperacaoEnum.RETRIEVEOTHERS
+        && !permissao.bloqueado) {
+          console.log('permissao');
+          console.log(permissao);
+          return true;
+        }
+        return false;
+      }));
+      acessos.set(acessosEnum.EDITARATIVIDADE, !!grupoPermissoes.permissoes.find((permissao) => (
+        permissao.modulo === ModuloEnum.ATIVIDADE
+        && permissao.tipoOperacao === TipoOperacaoEnum.UPDATEOTHERS
+        && !permissao.bloqueado
+      )));
+
+      console.log(acessos);
+
       return acessos;
     } catch (error) {
       console.log('GrupoController.getAcessosGrupo');
@@ -112,9 +136,11 @@ class GrupoController {
         acessosEnum: page.acessosEnum,
         path: page.path,
         hasAccess: grupoPermissoes.get(page.acessosEnum),
-        isRegEx: page.isRegEx,
+        isRegEx: page.isRegEx || false,
         selfEdit: isSelfEdit(page.acessosEnum),
       }));
+
+      console.log(acesso);
 
       const retjson = {
         acesso,

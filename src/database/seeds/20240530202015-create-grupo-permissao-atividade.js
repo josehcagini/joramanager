@@ -14,7 +14,7 @@ module.exports = {
     const grupoDev = resultsGrupo.find((result) => result.nome === grupos.dev);
     const grupoAdmin = resultsGrupo.find((result) => result.nome === grupos.admin);
 
-    const [resultsPermissao] = await queryInterface.sequelize.query(`select id, descricao, tipo_operacao, modulo from dba.permissao where modulo in ( '${ModuloEnum.USUARIO}' )`);
+    const [resultsPermissao] = await queryInterface.sequelize.query(`select id, descricao, tipo_operacao, modulo from dba.permissao where modulo in ( '${ModuloEnum.ATIVIDADE}' )`);
 
     await queryInterface.bulkInsert(
       { tableName: 'grupo_permissao', schema: 'dba' },
@@ -22,49 +22,49 @@ module.exports = {
       // admin
         {
           grupo_id: grupoAdmin.id,
-          permissao_id: resultsPermissao.find((result) => result.modulo === ModuloEnum.USUARIO && result.tipo_operacao === TipoOperacaoEnum.CREATE).id,
+          permissao_id: resultsPermissao.find((result) => result.modulo === ModuloEnum.ATIVIDADE && result.tipo_operacao === TipoOperacaoEnum.CREATE).id,
           bloqueado: false,
           created_at: new Date(),
           updated_at: new Date(),
         },
         {
           grupo_id: grupoAdmin.id,
-          permissao_id: resultsPermissao.find((result) => result.modulo === ModuloEnum.USUARIO && result.tipo_operacao === TipoOperacaoEnum.DELETEOTHERS).id,
+          permissao_id: resultsPermissao.find((result) => result.modulo === ModuloEnum.ATIVIDADE && result.tipo_operacao === TipoOperacaoEnum.DELETEOTHERS).id,
           bloqueado: false,
           created_at: new Date(),
           updated_at: new Date(),
         },
         {
           grupo_id: grupoAdmin.id,
-          permissao_id: resultsPermissao.find((result) => result.modulo === ModuloEnum.USUARIO && result.tipo_operacao === TipoOperacaoEnum.DELETESELF).id,
+          permissao_id: resultsPermissao.find((result) => result.modulo === ModuloEnum.ATIVIDADE && result.tipo_operacao === TipoOperacaoEnum.DELETESELF).id,
           bloqueado: false,
           created_at: new Date(),
           updated_at: new Date(),
         },
         {
           grupo_id: grupoAdmin.id,
-          permissao_id: resultsPermissao.find((result) => result.modulo === ModuloEnum.USUARIO && result.tipo_operacao === TipoOperacaoEnum.RETRIEVEOTHERS).id,
+          permissao_id: resultsPermissao.find((result) => result.modulo === ModuloEnum.ATIVIDADE && result.tipo_operacao === TipoOperacaoEnum.RETRIEVEOTHERS).id,
           bloqueado: false,
           created_at: new Date(),
           updated_at: new Date(),
         },
         {
           grupo_id: grupoAdmin.id,
-          permissao_id: resultsPermissao.find((result) => result.modulo === ModuloEnum.USUARIO && result.tipo_operacao === TipoOperacaoEnum.RETRIEVESELF).id,
+          permissao_id: resultsPermissao.find((result) => result.modulo === ModuloEnum.ATIVIDADE && result.tipo_operacao === TipoOperacaoEnum.RETRIEVESELF).id,
           bloqueado: false,
           created_at: new Date(),
           updated_at: new Date(),
         },
         {
           grupo_id: grupoAdmin.id,
-          permissao_id: resultsPermissao.find((result) => result.modulo === ModuloEnum.USUARIO && result.tipo_operacao === TipoOperacaoEnum.UPDATEOTHERS).id,
+          permissao_id: resultsPermissao.find((result) => result.modulo === ModuloEnum.ATIVIDADE && result.tipo_operacao === TipoOperacaoEnum.UPDATEOTHERS).id,
           bloqueado: false,
           created_at: new Date(),
           updated_at: new Date(),
         },
         {
           grupo_id: grupoAdmin.id,
-          permissao_id: resultsPermissao.find((result) => result.modulo === ModuloEnum.USUARIO && result.tipo_operacao === TipoOperacaoEnum.UPDATESELF).id,
+          permissao_id: resultsPermissao.find((result) => result.modulo === ModuloEnum.ATIVIDADE && result.tipo_operacao === TipoOperacaoEnum.UPDATESELF).id,
           bloqueado: false,
           created_at: new Date(),
           updated_at: new Date(),
@@ -73,49 +73,49 @@ module.exports = {
         // dev
         {
           grupo_id: grupoDev.id,
-          permissao_id: resultsPermissao.find((result) => result.modulo === ModuloEnum.USUARIO && result.tipo_operacao === TipoOperacaoEnum.CREATE).id,
-          bloqueado: true,
-          created_at: new Date(),
-          updated_at: new Date(),
-        },
-        {
-          grupo_id: grupoDev.id,
-          permissao_id: resultsPermissao.find((result) => result.modulo === ModuloEnum.USUARIO && result.tipo_operacao === TipoOperacaoEnum.DELETEOTHERS).id,
-          bloqueado: true,
-          created_at: new Date(),
-          updated_at: new Date(),
-        },
-        {
-          grupo_id: grupoDev.id,
-          permissao_id: resultsPermissao.find((result) => result.modulo === ModuloEnum.USUARIO && result.tipo_operacao === TipoOperacaoEnum.DELETESELF).id,
+          permissao_id: resultsPermissao.find((result) => result.modulo === ModuloEnum.ATIVIDADE && result.tipo_operacao === TipoOperacaoEnum.CREATE).id,
           bloqueado: false,
           created_at: new Date(),
           updated_at: new Date(),
         },
         {
           grupo_id: grupoDev.id,
-          permissao_id: resultsPermissao.find((result) => result.modulo === ModuloEnum.USUARIO && result.tipo_operacao === TipoOperacaoEnum.RETRIEVEOTHERS).id,
-          bloqueado: false,
-          created_at: new Date(),
-          updated_at: new Date(),
-        },
-        {
-          grupo_id: grupoDev.id,
-          permissao_id: resultsPermissao.find((result) => result.modulo === ModuloEnum.USUARIO && result.tipo_operacao === TipoOperacaoEnum.RETRIEVESELF).id,
-          bloqueado: false,
-          created_at: new Date(),
-          updated_at: new Date(),
-        },
-        {
-          grupo_id: grupoDev.id,
-          permissao_id: resultsPermissao.find((result) => result.modulo === ModuloEnum.USUARIO && result.tipo_operacao === TipoOperacaoEnum.UPDATEOTHERS).id,
+          permissao_id: resultsPermissao.find((result) => result.modulo === ModuloEnum.ATIVIDADE && result.tipo_operacao === TipoOperacaoEnum.DELETEOTHERS).id,
           bloqueado: true,
           created_at: new Date(),
           updated_at: new Date(),
         },
         {
           grupo_id: grupoDev.id,
-          permissao_id: resultsPermissao.find((result) => result.modulo === ModuloEnum.USUARIO && result.tipo_operacao === TipoOperacaoEnum.UPDATESELF).id,
+          permissao_id: resultsPermissao.find((result) => result.modulo === ModuloEnum.ATIVIDADE && result.tipo_operacao === TipoOperacaoEnum.DELETESELF).id,
+          bloqueado: false,
+          created_at: new Date(),
+          updated_at: new Date(),
+        },
+        {
+          grupo_id: grupoDev.id,
+          permissao_id: resultsPermissao.find((result) => result.modulo === ModuloEnum.ATIVIDADE && result.tipo_operacao === TipoOperacaoEnum.RETRIEVEOTHERS).id,
+          bloqueado: false,
+          created_at: new Date(),
+          updated_at: new Date(),
+        },
+        {
+          grupo_id: grupoDev.id,
+          permissao_id: resultsPermissao.find((result) => result.modulo === ModuloEnum.ATIVIDADE && result.tipo_operacao === TipoOperacaoEnum.RETRIEVESELF).id,
+          bloqueado: false,
+          created_at: new Date(),
+          updated_at: new Date(),
+        },
+        {
+          grupo_id: grupoDev.id,
+          permissao_id: resultsPermissao.find((result) => result.modulo === ModuloEnum.ATIVIDADE && result.tipo_operacao === TipoOperacaoEnum.UPDATEOTHERS).id,
+          bloqueado: false,
+          created_at: new Date(),
+          updated_at: new Date(),
+        },
+        {
+          grupo_id: grupoDev.id,
+          permissao_id: resultsPermissao.find((result) => result.modulo === ModuloEnum.ATIVIDADE && result.tipo_operacao === TipoOperacaoEnum.UPDATESELF).id,
           bloqueado: false,
           created_at: new Date(),
           updated_at: new Date(),
