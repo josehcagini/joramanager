@@ -27,6 +27,9 @@ class LoginController {
       }
 
       const usuarioFind = await UsuarioRepo.findOne({ where: { nome } });
+
+      console.log(`usuario encontrado ${usuarioFind}`);
+
       if (!usuarioFind) {
         throw new GenericError('usuario nao encontrado', { status: StatusCodes.NOT_FOUND });
       }
@@ -43,7 +46,7 @@ class LoginController {
         usuario: {
           id: usuario.id,
           nome: usuario.nome,
-          grupoId: usuario.grupo_id,
+          grupoId: usuario.grupoId,
         },
         paths: {
           home: '/',
@@ -53,7 +56,7 @@ class LoginController {
     } catch (error) {
       const status = error.status ? error.status : StatusCodes.INTERNAL_SERVER_ERROR;
 
-      return res.status(status).json({
+      const retjson = {
         error: {
           message: error.message,
           ...error,
@@ -61,7 +64,9 @@ class LoginController {
         paths: {
           home: '/',
         },
-      });
+      };
+
+      return res.status(status).json(retjson);
     }
   }
 }

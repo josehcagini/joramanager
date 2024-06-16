@@ -6,7 +6,7 @@ const bcryptjs = require('bcryptjs');
 module.exports = {
   async up(queryInterface) {
     const grupos = {
-      dev: 'dev',
+      dev: 'admin',
     };
 
     const [resultsGrupo] = await queryInterface.sequelize.query(`select id, nome from dba.grupo where nome in ( '${grupos.dev}' )`);

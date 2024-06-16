@@ -3,6 +3,8 @@ import GenericError from '../error/GenericError.js';
 import GrupoRepo from '../repository/GrupoRepo.js';
 import ModuloEnum from '../enum/ModuloEnum.js';
 import TipoOperacaoEnum from '../enum/TipoOperacaoEnum.js';
+import pagesEnum from '../enum/pagesEnum.js';
+import acessosEnum, { isSelfEdit } from '../enum/acessosEnum.js';
 
 class GrupoController {
   async hasAccess(tipoOperacao, modulo, grupoId) {
@@ -56,22 +58,66 @@ class GrupoController {
     }
   }
 
-  async getAcessos(req, res) {
+  static async getAcessosGrupo(grupoId) {
+    try {
+      const grupoPermissoes = await GrupoRepo.findByPk(grupoId, true);
+
+      const acessos = new Map();
+
+      acessos.set(acessosEnum.REGISTRARUSUARIO, !!grupoPermissoes.permissoes.find((permissao) => (
+        permissao.modulo === ModuloEnum.USUARIO
+        && permissao.tipoOperacao === TipoOperacaoEnum.CREATE
+        && !permissao.bloqueado
+      )));
+
+      acessos.set(acessosEnum.HOME, true);
+      acessos.set(acessosEnum.LOGIN, true);
+      acessos.set(acessosEnum.LOGOUT, true);
+      acessos.set(acessosEnum.LISTARUSUARIO, !!grupoPermissoes.permissoes.find((permissao) => (
+        permissao.modulo === ModuloEnum.USUARIO
+        && permissao.tipoOperacao === TipoOperacaoEnum.RETRIEVEOTHERS
+        && !permissao.bloqueado
+      )));
+      acessos.set(acessosEnum.EDITARRUSUARIO, !!grupoPermissoes.permissoes.find((permissao) => (
+        permissao.modulo === ModuloEnum.USUARIO
+        && permissao.tipoOperacao === TipoOperacaoEnum.UPDATEOTHERS
+        && !permissao.bloqueado
+      )));
+
+      acessos.set(acessosEnum.EDITARRUSUARIOPROPRIO, !!grupoPermissoes.permissoes.find((permissao) => (
+        permissao.modulo === ModuloEnum.USUARIO
+        && permissao.tipoOperacao === TipoOperacaoEnum.UPDATESELF
+        && !permissao.bloqueado
+      )));
+
+      return acessos;
+    } catch (error) {
+      console.log('GrupoController.getAcessosGrupo');
+      console.log(error);
+      throw new GenericError(
+        error.message,
+        { status: error.status ? error.status : StatusCodes.INTERNAL_SERVER_ERROR },
+      );
+    }
+  }
+
+  async getAcessoGrupoPage(req, res) {
     try {
       const { grupoId } = req.params;
 
-      const grupoPermissoes = await GrupoRepo.findByPk(grupoId, true);
+      const grupoPermissoes = await GrupoController.getAcessosGrupo(grupoId);
+      const pagePersmissoes = [...pagesEnum];
 
-      const acessos = {
-        registrarUsuario: grupoPermissoes.permissoes.find((permissao) => (
-          permissao.modulo === ModuloEnum.USUARIO
-          && permissao.tipoOperacao === TipoOperacaoEnum.CREATE
-          && !permissao.bloqueado
-        )),
-      };
+      const acesso = pagePersmissoes.map((page) => ({
+        acessosEnum: page.acessosEnum,
+        path: page.path,
+        hasAccess: grupoPermissoes.get(page.acessosEnum),
+        isRegEx: page.isRegEx,
+        selfEdit: isSelfEdit(page.acessosEnum),
+      }));
 
       const retjson = {
-        acessos,
+        acesso,
       };
       return res.status(StatusCodes.OK).json(retjson);
     } catch (error) {

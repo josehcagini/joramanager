@@ -61,7 +61,7 @@ class UsuarioController {
       const permissoes = await GrupoController.hasAccess(
         tipoOperacao,
         modulo,
-        usuario.grupo_id,
+        usuario.grupoId,
       );
       return permissoes;
     } catch (error) {
@@ -167,7 +167,14 @@ class UsuarioController {
     try {
       const usuarios = await UsuarioRepo.findAll();
 
-      return res.status(StatusCodes.OK).json(usuarios);
+      const retjson = {
+        usuarios,
+        paths: {
+          home: '/',
+        },
+      };
+
+      return res.status(StatusCodes.OK).json(retjson);
     } catch (error) {
       const status = error.status ? error.status : StatusCodes.INTERNAL_SERVER_ERROR;
       const retjson = {

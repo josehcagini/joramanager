@@ -5,6 +5,6 @@ import GrupoController from '../controller/GrupoController.js';
 
 const router = new Router();
 
-router.get('/:grupoId/acessos', AuthToken, GrupoController.getAcessos);
+router.get('/:grupoId/acessos', AuthToken, GrupoController.getAcessoGrupoPage);
 
 export default router;

@@ -7,11 +7,11 @@ class UsuarioEntity {
 
     if (usuario.senha) this.senha = usuario.senha;
     if (usuario.senha_hash) this.senha_hash = usuario.senha_hash;
-    if (usuario.grupo_id) this.grupo_id = usuario.grupo_id;
+    if (usuario.grupoId) this.grupoId = usuario.grupoId;
   }
 
   static parse(usuario) {
-    const usuarioParse = { nome: usuario.nome, senha: usuario.senha, grupo_id: usuario.grupoId };
+    const usuarioParse = { nome: usuario.nome, senha: usuario.senha, grupoId: usuario.grupoId };
 
     return new UsuarioEntity(usuarioParse);
   }
@@ -22,7 +22,7 @@ class UsuarioEntity {
       const usuarioParse = {
         id: usuarioModel.id,
         nome: usuarioModel.nome,
-        grupo_id: usuarioModel.grupo_id,
+        grupoId: usuarioModel.grupo_id,
       };
       return new UsuarioEntity(usuarioParse);
     } catch (error) {
@@ -35,7 +35,7 @@ class UsuarioEntity {
     const usuarioParse = {
       id: usuarioModel.id,
       nome: usuarioModel.nome,
-      grupo_id: usuarioModel.grupo_id,
+      grupoId: usuarioModel.grupo_id,
       senha_hash: usuarioModel.senha_hash,
     };
 
