@@ -1,4 +1,4 @@
-import {StatusCodes} from 'http-status-codes';
+import { StatusCodes } from 'http-status-codes';
 import GenericError from '../error/GenericError.js';
 
 import AtividadeRepo from '../repository/AtividadeRepo.js';
@@ -28,7 +28,7 @@ class AtividadeController {
       throw new GenericError('atividade nao possui data de usuario', { status: StatusCodes.BAD_REQUEST });
     }
 
-    if(!StatusEnum.isValidCode(novaAtividade.status)) {
+    if (!StatusEnum.isValidCode(novaAtividade.status)) {
       throw new GenericError('atividade nao possui status', { status: StatusCodes.BAD_REQUEST });
     }
 
@@ -37,12 +37,12 @@ class AtividadeController {
     if (atividadeExiste) {
       throw new GenericError('titulo ja em uso', { status: StatusCodes.CONFLICT });
     }
-    console.log("Teste 1")
+    console.log('Teste 1');
     if (novaAtividade.artefato) {
-      console.log("Teste 2")
+      console.log('Teste 2');
       for (const artefato of novaAtividade.artefato) {
-          await ArtefatoController.validarNovoArtefato(artefato);
-          console.log("Teste 3")
+        await ArtefatoController.validarNovoArtefato(artefato);
+        console.log('Teste 3');
       }
     }
   }
@@ -74,7 +74,7 @@ class AtividadeController {
       throw new GenericError('atividade nao possui data de usuario', { status: StatusCodes.BAD_REQUEST });
     }
 
-    if(!StatusEnum.isValidCode(novaAtividade.status)) {
+    if (!StatusEnum.isValidCode(novaAtividade.status)) {
       throw new GenericError('atividade nao possui status', { status: StatusCodes.BAD_REQUEST });
     }
   }
@@ -95,15 +95,15 @@ class AtividadeController {
   async store(req, res) {
     try {
       const { atividade } = req.body;
-      
+
       await AtividadeController.validarNovaAtividade(atividade);
-      
+
       const atividadeSave = AtividadeEntity.fromJson(atividade);
-      
+
       const novoAtividade = await AtividadeRepo.create(atividadeSave, {
         include: [
           {
-            association: "artefato",
+            association: 'artefato',
           },
         ],
       });
@@ -140,7 +140,7 @@ class AtividadeController {
       if (!atividadeId) {
         throw new GenericError('request sem atividadeId', { status: StatusCodes.BAD_REQUEST });
       }
-      
+
       if (
         AtividadeController.isRequestOther(req.atividade.id, atividadeId)
         && AtividadeController.onlyHasAccessToSelf(req.permissoes)

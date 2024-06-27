@@ -62,6 +62,9 @@ class GrupoController {
     try {
       const grupoPermissoes = await GrupoRepo.findByPk(grupoId, true);
 
+      console.log('teste');
+      console.log(grupoPermissoes);
+
       const acessos = new Map();
 
       acessos.set(acessosEnum.REGISTRARUSUARIO, !!grupoPermissoes.permissoes.find((permissao) => (

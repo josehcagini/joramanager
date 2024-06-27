@@ -5,6 +5,7 @@ import { fileURLToPath } from 'url';
 import './database/index.js';
 
 import swaggerUI from 'swagger-ui-express';
+import swaggerJsdoc from 'swagger-jsdoc';
 
 import express from 'express';
 import cors from 'cors';
@@ -22,6 +23,28 @@ const currentdirname = dirname(fileURLToPath(import.meta.url));
 const pathEnv = join(currentdirname, '..', '.env');
 
 dotenv.config({ path: pathEnv });
+
+const options = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'API Documentation',
+      version: '1.0.0',
+    },
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
+      },
+    },
+  },
+  apis: ['./src/router/*.js'], // Caminho para seus arquivos de rotas
+};
+
+const swaggerSpec = swaggerJsdoc(options);
 
 const whiteList = [
   'http://localhost:3000',
@@ -54,7 +77,7 @@ class App {
       crossOriginEmbedderPolicy: false,
     }));
     this.app.use(express.urlencoded({ extended: true }));
-    this.app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+    this.app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
   }
 
   routes() {

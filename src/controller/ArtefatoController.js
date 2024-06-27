@@ -1,5 +1,5 @@
+import { StatusCodes } from 'http-status-codes';
 import GenericError from '../error/GenericError.js';
-import {StatusCodes} from 'http-status-codes';
 import ArtefatoRepo from '../repository/ArtefatoRepo.js';
 import ArtefatoEntity from '../entity/ArtefatoEntity.js';
 
@@ -25,7 +25,7 @@ class ArtefatoController {
       throw new GenericError('artefato nao possui nome de arquivo', { status: StatusCodes.BAD_REQUEST });
     }
 
-    if(novoArtefato.url) {
+    if (novoArtefato.url) {
       throw new GenericError('artefato nao possui url', { status: StatusCodes.BAD_REQUEST });
     }
 
@@ -59,7 +59,7 @@ class ArtefatoController {
       throw new GenericError('artefato nao possui nome de arquivo', { status: StatusCodes.BAD_REQUEST });
     }
 
-    if(artefatoUpdate.url) {
+    if (artefatoUpdate.url) {
       throw new GenericError('artefato nao possui url', { status: StatusCodes.BAD_REQUEST });
     }
   }
@@ -76,7 +76,7 @@ class ArtefatoController {
     console.log('onlyHasAccessToSelf?', retorno);
     return retorno;
   }
-  
+
   async store(req, res) {
     try {
       const { artefato } = req.body;
@@ -119,7 +119,7 @@ class ArtefatoController {
       if (!artefatoId) {
         throw new GenericError('request sem artefatoId', { status: StatusCodes.BAD_REQUEST });
       }
-      
+
       if (
         ArtefatoController.isRequestOther(req.artefato.id, artefatoId)
         && ArtefatoController.onlyHasAccessToSelf(req.permissoes)
